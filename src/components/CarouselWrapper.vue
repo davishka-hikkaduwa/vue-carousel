@@ -11,6 +11,12 @@
                 <i @click="nextSlide" class="fa-solid fa-chevron-right"></i>
             </div>
         </div>
+
+        <!-- pagination -->
+        <div class="pagination">
+            <span @click="goToSlide(index)" v-for="(slide, index) in getSlideCount" :key="index" :class="{ active : index + 1 === currentSlide }">
+            </span>
+        </div>
     </div>        
 </template>
 
@@ -40,12 +46,17 @@ export default {
             currentSlide.value -= 1;
         }
 
+        // pagination
+        const goToSlide = (index) => {
+            currentSlide.value = index + 1;
+        }
+
         onMounted(() => {
             getSlideCount.value = document.querySelectorAll(".carousel-slide").length;
             console.log(getSlideCount.value);
         }) 
 
-        return { currentSlide, nextSlide, prevSlide }
+        return { currentSlide, nextSlide, prevSlide, getSlideCount, goToSlide }
     }
 };
 
@@ -66,6 +77,10 @@ export default {
         flex: 1;
     }
 
+    .toggle-page :hover {
+        opacity: 1 !important;
+    }
+
     .right {
         justify-content: flex-end;
     }
@@ -80,7 +95,32 @@ export default {
         height: 40px;
         background-color: #6347c7;
         color: #fff;
+        opacity: 0.6;
     }
 }
 
+.pagination {
+    position: absolute;
+    bottom: 24px;
+    width: 100%;
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    align-items: center;
+
+    span {
+        cursor: pointer;
+        width: 40px;
+        height: 6px;
+        /* border-radius: 50%; */
+        background-color: #fff;
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+        opacity: 0.3;
+    }
+    
+    .active {
+        background-color: #6347c7;
+        opacity: 0.8;
+    }
+}
 </style>
